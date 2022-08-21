@@ -97,7 +97,13 @@ border-radius: 4px;
   /* align-items: center;
   text-align: center; */
   /* 바로 아랫단계 object에만 영향을 주고 그 아래 text는 text-align으로 컨트롤 */
-  
+}
+
+.weekdays.day--case {
+  height: 85%;
+  background-color: black;
+  flex-direction: column;
+  padding: 0;
 }
 
 .weekdays div {
@@ -144,6 +150,17 @@ border-radius: 4px;
   height: 85%;
   width: 100%;
   border: 1px solid wheat;
+}
+
+.day.today {
+  display: flex;
+  flex-direction: column;
+  height: 20%;
+}
+
+.day--content {
+  height: 80%;
+  border: 0.5px solid white;
 }
 
 .days div:hover {
