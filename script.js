@@ -36,16 +36,18 @@ nextBtn.addEventListener('click', () => {
 function makeDayCalendar(newDate) {
   // document.querySelector('.weekdays').remove();
   document.querySelector('.days').remove();
-  document.querySelector('.weekdays').classList.add('day--case')
+  document.querySelector('.weekdays').className = 'day--case'
+  
+  // document.querySelector('.weekdays').classList.add('day--case')
 
-  const theDay = document.querySelector('.weekdays');
+  const theDay = document.querySelector('.day--case');
 
   let day = '';
   // console.log(newDate.getDate());
   if( newDate.getDate() === new Date().getDate() && newDate.getMonth() === new Date().getMonth() && newDate.getFullYear() === new Date().getFullYear() ) {
-    day += `<div class="day today">${newDate.getDate()}</div><div class="day--content"></div>`;
+    day += `<div class="day today"></div>`;
   } else {
-    day += `<div class="day">${newDate.getDate()}</div><div class="day--content"></div>`;
+    day += `<div class="day"></div>`;
   };
   theDay.innerHTML = day;
 };

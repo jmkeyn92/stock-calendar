@@ -99,7 +99,8 @@ border-radius: 4px;
   /* 바로 아랫단계 object에만 영향을 주고 그 아래 text는 text-align으로 컨트롤 */
 }
 
-.weekdays.day--case {
+.day--case {
+  width: calc(100%/5);
   height: 85%;
   background-color: black;
   flex-direction: column;
@@ -155,13 +156,13 @@ border-radius: 4px;
 .day.today {
   display: flex;
   flex-direction: column;
-  height: 20%;
+  height: 100%;
 }
 
-.day--content {
+/* .day--content {
   height: 80%;
   border: 0.5px solid white;
-}
+} */
 
 .days div:hover {
   cursor: pointer;
