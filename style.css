@@ -105,6 +105,7 @@ border-radius: 4px;
   background-color: black;
   flex-direction: column;
   padding: 0;
+  font-size: 16px;
 }
 
 .weekdays div {
