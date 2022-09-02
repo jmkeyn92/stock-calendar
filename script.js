@@ -86,7 +86,7 @@ function makeDayCalendar(newDate) {
       if( newDate.getDate() === new Date().getDate() && newDate.getMonth() === new Date().getMonth() && newDate.getFullYear() === new Date().getFullYear() ) {
         day += `<div class="day today">${JSON.stringify(obj[newDateFormat])}</div>`;
       } else {
-        day += `<div class="day">${JSON.stringify(obj[newDateFormat]['파크시스템스'][0]).replace(/["]+/g, '')}</div>`;
+        day += `<div class="day">${JSON.stringify(obj[newDateFormat]).replace(/["]+/g, '')}</div>`;
       };
       theDay.innerHTML = day;
     });
@@ -132,8 +132,6 @@ function makeMonthCalendar(newDate) {
   const monthDays = document.querySelector('.days');
   const lastDay = new Date(newDate.getFullYear(), newDate.getMonth() + 1, 0).getDate();
   const prevLastDay = new Date(newDate.getFullYear(), newDate.getMonth(), 0).getDate();
-
-  
 
   document.querySelector('.date h1').innerHTML = months[newDate.getMonth()];
   document.querySelector('.date p').innerHTML = newDate.toDateString();
