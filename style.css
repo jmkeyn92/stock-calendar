@@ -100,12 +100,27 @@ border-radius: 4px;
 }
 
 .day--case {
-  width: calc(100%/5);
+  width: calc(100%);
   height: 85%;
   background-color: black;
-  flex-direction: column;
-  padding: 0;
+  display: flex;
+  flex-direction: row;
+  padding: 5px;
   font-size: 16px;
+}
+
+.day--list {
+  width: calc(100%/5);
+  background-color: black;
+}
+
+.day--content {
+  width: 80%;
+  background-color: rgb(36, 36, 35);
+}
+
+.days, .list:hover {
+  cursor: pointer;
 }
 
 .weekdays div {
