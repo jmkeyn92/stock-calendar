@@ -23,6 +23,7 @@ const months = [
 const prevBtn = document.querySelector(".fa-angle-left");
 const nextBtn = document.querySelector(".fa-angle-right");
 
+const monthBtn = document.querySelector("#month");
 const weekBtn = document.querySelector("#week");
 const dayBtn = document.querySelector("#day");
 
@@ -46,12 +47,25 @@ function dayclickListener() {
   });
 }
 
+monthBtn.addEventListener("click", (event) => {
+  weekBtn.classList.remove('active');
+  dayBtn.classList.remove('active');
+  monthBtn.classList.add('active');
+  makeMonthCalendar(date);
+});
+
 weekBtn.addEventListener("click", (event) => {
   // console.log(event.target);
+  monthBtn.classList.remove('active');
+  dayBtn.classList.remove('active');
+  weekBtn.classList.add('active');
   makeWeekCalendar(date);
 });
 
 dayBtn.addEventListener("click", () => {
+  monthBtn.classList.remove('active');
+  weekBtn.classList.remove('active');
+  dayBtn.classList.add('active');
   console.log(date.getDate());
   makeDayCalendar(date);
 });
@@ -111,9 +125,15 @@ function makeDayCalendar(newDate) {
         newDate.getMonth() === new Date().getMonth() &&
         newDate.getFullYear() === new Date().getFullYear()
       ) {
-        day += `<div class="day today">${JSON.stringify(
-          obj[newDateFormat]
-        )}</div>`;
+        for (const [key, value] of Object.entries(obj[newDateFormat])) {
+          day += `<div class="day today list" id=${JSON.stringify(value["링크"])}>
+            [${key}]<br>${JSON.stringify(value["내용"]).replace(/["]+/g, "")}
+          </div><br>`;
+        }
+
+        // day += `<div class="day today">${JSON.stringify(
+        //   obj[newDateFormat]
+        // )}</div>`;
       } else {
         // day += `<div class="day">${JSON.stringify(Object.keys(obj[newDateFormat])[1]).replace(
         //   /["]+/g,
@@ -145,29 +165,96 @@ function showRight(link) {
 };
 
 
+// make week calendar
 function makeWeekCalendar(newDate) {
-  const weekDays = document.querySelector(".days");
+  const weekDays = document.querySelector(".weekdays");
+  const weekList = document.querySelector(".days");
+  weekList.classList.remove('days');
+  weekList.classList.add('week');
+
   const firstDayWeek = newDate.getDate() - newDate.getDay();
+  const dayWeek = ['일', '월', '화', '수', '목', '금', '토']
 
   let days = "";
-  for (let i = 0; i < 7; i++) {
-    if (
-      firstDayWeek + i === new Date().getDate() &&
-      newDate.getMonth() === new Date().getMonth() &&
-      newDate.getFullYear() === new Date().getFullYear()
-    ) {
-      days += `<div class="week today">${
-        firstDayWeek + i
-      }<div class="week__content"></div></div>`;
-    } else {
-      days += `<div class="week">${
-        firstDayWeek + i
-      }<div class="week__content"></div></div>`;
-    }
-  }
+      for (let i = 0; i < 7; i++) {
+        if (
+          firstDayWeek + i === new Date().getDate() &&
+          newDate.getMonth() === new Date().getMonth() &&
+          newDate.getFullYear() === new Date().getFullYear()
+        ) {
+          days += `<div class="week--day today">${
+            firstDayWeek + i
+          } (${dayWeek[i]})</div>`;
+        } else {
+          days += `<div class="week--day">${
+            firstDayWeek + i
+          } (${dayWeek[i]})</div>`;
+        }};
   weekDays.innerHTML = days;
-  // dayclick(); ???
-}
+
+  // const newDateFormat = newDate
+  //   .toLocaleDateString("pt-br")
+  //   .split("/")
+  //   .reverse()
+  //   .join("-");
+
+  // console.log(newDateFormat);
+
+  let obj;
+  fetch("calendarDB.json")
+    .then(res => res.json())
+    .then(data => obj = data)
+    // .then((data) => (obj = data))
+    .then(() => {
+      console.log(obj);
+      // console.log(obj[newDateFormat]);
+
+      let weekDaysList = "";
+      for (let i = 0; i < 7; i++) {
+        try {
+          const newDateFormat = new Date(newDate.getFullYear(), newDate.getMonth(), newDate.getDate() - newDate.getDay() + i)
+            .toLocaleDateString("pt-br")
+            .split("/")
+            .reverse()
+            .join("-");
+
+          // console.log(obj[newDateFormat]);
+
+          // 이 부분이 상당히 어려웠음. if와 for이 결합되어서 굉장히 오묘한 영역을 커버하게 됨 / 사실 지금도 이해가 잘 안 됨
+          if (Object.keys(obj[newDateFormat]).length == 1) {
+            for (const [key, value] of Object.entries(obj[newDateFormat])) {
+              weekDaysList += `<div class="week--day--list">`;
+              for (const [key, value] of Object.entries(obj[newDateFormat])) {
+                weekDaysList += `<div class="elm" data-date=${newDateFormat} id=${JSON.stringify(value["링크"])}>[${key}]</div>`;
+              }
+              weekDaysList += `</div>`;
+            }
+          } else {
+            weekDaysList += `<div class="week--day--list">`;
+            for (const [key, value] of Object.entries(obj[newDateFormat])) {
+              weekDaysList += `<div class="elm" data-date=${newDateFormat} id=${JSON.stringify(value["링크"])}>[${key}]</div>`;
+            }
+            weekDaysList += `</div>`;
+          }
+        } catch {
+          weekDaysList += `<div class="week--day--list"></div>`;
+        }
+        
+      }
+      weekList.innerHTML = weekDaysList;
+
+      const weekListAll = document.querySelectorAll('.elm');
+      weekListAll.forEach((item) => {
+        item.addEventListener("click", () => {
+          weekList.classList.remove('week');
+          weekList.classList.add('days');
+          makeDayCalendar(new Date(item.dataset.date));
+          showRight(item.id);
+        });
+      });
+  });
+};
+
 
 function makeMonthCalendar(newDate) {
   const monthDays = document.querySelector(".days");
