@@ -291,9 +291,9 @@ function makeMonthCalendar(newDate) {
       newDate.getMonth() === new Date().getMonth() &&
       newDate.getFullYear() === new Date().getFullYear()
     ) {
-      days += `<div class="today daytemp ${i}">${i}</div>`;
+      days += `<div class="today daytemp ${i}">${i}<span class="number--list">3</span></div>`;
     } else {
-      days += `<div class="daytemp ${i}">${i}</div>`;
+      days += `<div class="daytemp ${i}">${i}<span class="number--list">3</span></div>`;
     }
   }
 
