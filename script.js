@@ -152,7 +152,15 @@ function makeDayCalendar(newDate) {
       console.log(theDayListIn);
       theDayListIn.forEach((item) => {
         item.addEventListener("click", () => {
-          showRight(item.id);
+          // console.log(item.id);
+          console.log(item.id[4]);
+          if (item.id[4] === 's') {
+            showRight(item.id);
+          } else {
+            item.id = item.id.replace('http', 'https');
+            console.log(item.id);
+            showRight(item.id);
+          }
         });
       });
     });
