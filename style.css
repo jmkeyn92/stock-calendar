@@ -136,6 +136,7 @@ border-radius: 4px;
 
 .elm {
   cursor: pointer;
+  padding: 0.2rem 0;
 }
 
 
@@ -243,6 +244,20 @@ border-radius: 4px;
 .today {
   background-color: black;
   border: 0.5px solid white;
+}
+
+.day.elm {
+  font-size: 1.2rem;
+}
+
+.day.list {
+  padding: 0.5rem;
+  margin-right: 1rem;
+}
+
+.selected, .selected2 {
+  border: solid 0.2rem;
+  border-radius: 1%;
 }
 
 .number--list {

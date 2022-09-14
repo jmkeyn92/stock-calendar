@@ -36,6 +36,9 @@ function dayclickListener() {
 
   ListDayBtn.forEach((item) => {
     item.addEventListener("click", () => {
+      monthBtn.classList.remove('active');
+      weekBtn.classList.remove('active');
+      dayBtn.classList.add('active');
       console.log(item.textContent);
       // const dateThisPageStr = document.querySelector('div p')
       // const dateThisPage = new Date(dateThisPageStr);
@@ -51,7 +54,7 @@ monthBtn.addEventListener("click", (event) => {
   weekBtn.classList.remove('active');
   dayBtn.classList.remove('active');
   monthBtn.classList.add('active');
-  makeMonthCalendar(date);
+  makeMonthCalendarEx(date);
 });
 
 weekBtn.addEventListener("click", (event) => {
@@ -59,6 +62,7 @@ weekBtn.addEventListener("click", (event) => {
   monthBtn.classList.remove('active');
   dayBtn.classList.remove('active');
   weekBtn.classList.add('active');
+  // makeMonthCalendarEx(date);
   makeWeekCalendar(date);
 });
 
@@ -67,6 +71,7 @@ dayBtn.addEventListener("click", () => {
   weekBtn.classList.remove('active');
   dayBtn.classList.add('active');
   console.log(date.getDate());
+  // makeMonthCalendarEx(date);
   makeDayCalendar(date);
 });
 
@@ -80,11 +85,17 @@ nextBtn.addEventListener("click", () => {
   makeMonthCalendar(newDate);
 });
 
-// let theDayContent;
-function makeDayCalendar(newDate) {
-  document.querySelector(".date h1").innerHTML = months[newDate.getMonth()];
-  document.querySelector(".date p").innerHTML = newDate.toDateString();
-  document.querySelector(".days").remove();
+// make day calendar
+function makeDayCalendar(newDate, ID) {
+  // document.querySelector(".date h1").innerHTML = months[newDate.getMonth()];
+  // document.querySelector(".date p").innerHTML = newDate.toDateString();
+  try {
+    document.querySelector(".days").remove();
+  } catch {
+    document.querySelector(".week").remove();
+  };
+
+  // document.querySelector(".days").remove();
   // if( document.querySelector('.days') ) {
   //   document.querySelector('.days').remove();
   // };
@@ -120,45 +131,79 @@ function makeDayCalendar(newDate) {
       console.log(obj);
       console.log(obj[newDateFormat]);
       let day = "";
-      if (
-        newDate.getDate() === new Date().getDate() &&
-        newDate.getMonth() === new Date().getMonth() &&
-        newDate.getFullYear() === new Date().getFullYear()
-      ) {
-        for (const [key, value] of Object.entries(obj[newDateFormat])) {
-          day += `<div class="day today list" id=${JSON.stringify(value["링크"])}>
-            [${key}]<br>${JSON.stringify(value["내용"]).replace(/["]+/g, "")}
-          </div><br>`;
-        }
 
-        // day += `<div class="day today">${JSON.stringify(
-        //   obj[newDateFormat]
-        // )}</div>`;
-      } else {
-        // day += `<div class="day">${JSON.stringify(Object.keys(obj[newDateFormat])[1]).replace(
-        //   /["]+/g,
-        //   ""
-        // )}</div>`;
-
-        for (const [key, value] of Object.entries(obj[newDateFormat])) {
+      for (const [key, value] of Object.entries(obj[newDateFormat])) {
+        console.log(ID);
+        console.log(JSON.stringify(value["링크"]).replace(/['"]+/g,''));
+        if (ID === JSON.stringify(value["링크"]).replace(/['"]+/g,'')) {
+          day += `<div class="day list selected2" id=${JSON.stringify(value["링크"])}>
+          ${key}<div class="day elm">${JSON.stringify(value["내용"]).replace(/["]+/g, "")}
+        </div></div><br>`;
+          console.log('T');
+        } else {
           day += `<div class="day list" id=${JSON.stringify(value["링크"])}>
-            [${key}]<br>${JSON.stringify(value["내용"]).replace(/["]+/g, "")}
-          </div><br>`;
-        }
-      }
+          ${key}<div class="day elm">${JSON.stringify(value["내용"]).replace(/["]+/g, "")}
+        </div></div><br>`;
+        console.log('F');
+        };
+      };
+
+        
+
+      // if (
+      //   newDate.getDate() === new Date().getDate() &&
+      //   newDate.getMonth() === new Date().getMonth() &&
+      //   newDate.getFullYear() === new Date().getFullYear()
+      // ) {
+      //   for (const [key, value] of Object.entries(obj[newDateFormat])) {
+      //     day += `<div class="day list" id=${JSON.stringify(value["링크"])}>
+      //       ${key}<div class="day elm">${JSON.stringify(value["내용"]).replace(/["]+/g, "")}
+      //     </div></div><br>`;
+      //   }
+
+      //   // day += `<div class="day today">${JSON.stringify(
+      //   //   obj[newDateFormat]
+      //   // )}</div>`;
+      // } else {
+      //   // day += `<div class="day">${JSON.stringify(Object.keys(obj[newDateFormat])[1]).replace(
+      //   //   /["]+/g,
+      //   //   ""
+      //   // )}</div>`;
+
+      //   for (const [key, value] of Object.entries(obj[newDateFormat])) {
+      //     day += `<div class="day list" id=${JSON.stringify(value["링크"])}>
+      //       ${key}<div class="day elm">${JSON.stringify(value["내용"]).replace(/["]+/g, "")}
+      //     </div></div><br>`;
+      //   }
+      // }
       theDayList.innerHTML = day;
 
       const theDayListIn = document.querySelectorAll(".day.list");
+      theDayListIn.forEach(item => {
+        item.classList.remove('selected');
+      });
       console.log(theDayListIn);
       theDayListIn.forEach((item) => {
         item.addEventListener("click", () => {
           // console.log(item.id);
+          theDayListIn.forEach(item => {
+            item.classList.remove('selected2');
+          });
           console.log(item.id[4]);
           if (item.id[4] === 's') {
+            theDayListIn.forEach(item => {
+              item.classList.remove('selected');
+            });
+            item.classList.add('selected')
             showRight(item.id);
           } else {
             item.id = item.id.replace('http', 'https');
             console.log(item.id);
+            theDayListIn.forEach(item => {
+              item.classList.remove('selected');
+            });
+            item.classList.add('selected')
+
             showRight(item.id);
           }
         });
@@ -172,14 +217,33 @@ function showRight(link) {
   globalThis.theDayContent.innerHTML = theDayContentIn;
 };
 
+// function insertAfter(newNode, referenceNode) {
+//   referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+// }
+
 
 // make week calendar
 function makeWeekCalendar(newDate) {
+  
   const weekDays = document.querySelector(".weekdays");
   const weekList = document.querySelector(".days");
   weekList.classList.remove('days');
   weekList.classList.add('week');
-
+  
+  // const weekDays = document.querySelector(".weekdays");
+  // const weekList = document.querySelector(".days");
+  // let weekBack = '<div class="week"></div>'
+  
+  // try {
+  //   weekList.classList.remove('days');
+  //   weekList.classList.add('week');
+  //   console.log('A')
+  // } catch {
+  //   document.querySelector(".day--case").className = "weekdays";
+  //   document.querySelector(".day--list").remove();
+  //   document.querySelector(".day--content").remove();
+  // };
+  
   const firstDayWeek = newDate.getDate() - newDate.getDay();
   const dayWeek = ['일', '월', '화', '수', '목', '금', '토']
 
@@ -198,15 +262,9 @@ function makeWeekCalendar(newDate) {
             firstDayWeek + i
           } (${dayWeek[i]})</div>`;
         }};
+  console.log(days);
   weekDays.innerHTML = days;
-
-  // const newDateFormat = newDate
-  //   .toLocaleDateString("pt-br")
-  //   .split("/")
-  //   .reverse()
-  //   .join("-");
-
-  // console.log(newDateFormat);
+  console.log(weekDays);
 
   let obj;
   fetch("calendarDB.json")
@@ -233,14 +291,14 @@ function makeWeekCalendar(newDate) {
             for (const [key, value] of Object.entries(obj[newDateFormat])) {
               weekDaysList += `<div class="week--day--list">`;
               for (const [key, value] of Object.entries(obj[newDateFormat])) {
-                weekDaysList += `<div class="elm" data-date=${newDateFormat} id=${JSON.stringify(value["링크"])}>[${key}]</div>`;
+                weekDaysList += `<div class="elm" data-date=${newDateFormat} id=${JSON.stringify(value["링크"])}>${key}</div>`;
               }
               weekDaysList += `</div>`;
             }
           } else {
             weekDaysList += `<div class="week--day--list">`;
             for (const [key, value] of Object.entries(obj[newDateFormat])) {
-              weekDaysList += `<div class="elm" data-date=${newDateFormat} id=${JSON.stringify(value["링크"])}>[${key}]</div>`;
+              weekDaysList += `<div class="elm" data-date=${newDateFormat} id=${JSON.stringify(value["링크"])}>${key}</div>`;
             }
             weekDaysList += `</div>`;
           }
@@ -254,17 +312,32 @@ function makeWeekCalendar(newDate) {
       const weekListAll = document.querySelectorAll('.elm');
       weekListAll.forEach((item) => {
         item.addEventListener("click", () => {
+          monthBtn.classList.remove('active');
+          weekBtn.classList.remove('active');
+          dayBtn.classList.add('active');
           weekList.classList.remove('week');
           weekList.classList.add('days');
-          makeDayCalendar(new Date(item.dataset.date));
+          makeDayCalendar(new Date(item.dataset.date), item.id);
+          // theDayListIn.forEach(item => {
+          //   item.classList.remove('selected');
+          // });
+          // item.classList.add('selected')
           showRight(item.id);
         });
       });
   });
 };
 
+function makeMonthCalendarEx() {
+  location.reload(true);
+  location.href = location.href;
+  history.go(-1);
+  // makeMonthCalendar(newDate);
+}
 
 function makeMonthCalendar(newDate) {
+  
+  // Window.this.load(document.url('https://jmkeyn92.github.io/stock-calendar/'));
   const monthDays = document.querySelector(".days");
   const lastDay = new Date(
     newDate.getFullYear(),
