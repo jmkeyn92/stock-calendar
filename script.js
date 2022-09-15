@@ -81,6 +81,10 @@ prevBtn.addEventListener("click", () => {
 });
 
 nextBtn.addEventListener("click", () => {
+  // const periodSelected = document.querySelectorAll(".period__item");
+  // periodSelected.forEach(item => {
+  //   if (item.classList)
+  // });
   const newDate = new Date(date.setMonth(date.getMonth() + 1, 1));
   makeMonthCalendar(newDate);
 });
