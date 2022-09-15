@@ -335,7 +335,7 @@ function makeWeekCalendar(newDate) {
 function makeMonthCalendarEx() {
   location.reload(true);
   location.href = location.href;
-  history.go(-1);
+  history.go(0);
   // makeMonthCalendar(newDate);
 }
 
