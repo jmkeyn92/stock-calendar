@@ -76,17 +76,69 @@ dayBtn.addEventListener("click", () => {
 });
 
 prevBtn.addEventListener("click", () => {
-  const newDate = new Date(date.setMonth(date.getMonth() - 1, 1));
-  makeMonthCalendar(newDate);
+
+  const periodSelected = document.querySelectorAll(".period__item");
+  periodSelected.forEach(item => {
+    console.log(item.classList);
+    console.log(item.classList.value);
+    if (item.classList.value.includes('active')) {
+      periodTab = item.textContent;
+    }
+  });
+  console.log(periodTab);
+  if (periodTab==='Month') {
+    const newDate = new Date(date.setMonth(date.getMonth() - 1, 1));
+    makeMonthCalendar(newDate);
+  } else if (periodTab==='Week') {
+    const dateWeek = document.querySelector('div.date p')
+    console.log(dateWeek.textContent);
+    const newDate = Date.parse(dateWeek.textContent);
+    console.log(newDate);
+    // 6.048e+8 => 7day milliseconds
+    const newDateNext = new Date(newDate - 6.048e+8);
+    console.log(newDateNext);
+    // 월과 날짜를 다시 적어준다
+    document.querySelector(".date h1").innerHTML = months[newDateNext.getMonth()];
+    document.querySelector(".date p").innerHTML = newDateNext.toDateString();
+    makeWeekCalendar(newDateNext);
+  } else {
+    console.log('Day');
+  };
+
+  // const newDate = new Date(date.setMonth(date.getMonth() - 1, 1));
+  // makeMonthCalendar(newDate);
 });
 
+let periodTab = '';
 nextBtn.addEventListener("click", () => {
-  // const periodSelected = document.querySelectorAll(".period__item");
-  // periodSelected.forEach(item => {
-  //   if (item.classList)
-  // });
-  const newDate = new Date(date.setMonth(date.getMonth() + 1, 1));
-  makeMonthCalendar(newDate);
+  const periodSelected = document.querySelectorAll(".period__item");
+  periodSelected.forEach(item => {
+    console.log(item.classList);
+    console.log(item.classList.value);
+    if (item.classList.value.includes('active')) {
+      periodTab = item.textContent;
+    }
+  });
+  console.log(periodTab);
+  if (periodTab==='Month') {
+    const newDate = new Date(date.setMonth(date.getMonth() + 1, 1));
+    makeMonthCalendar(newDate);
+  } else if (periodTab==='Week') {
+    const dateWeek = document.querySelector('div.date p')
+    console.log(dateWeek.textContent);
+    const newDate = Date.parse(dateWeek.textContent);
+    console.log(newDate);
+    // 6.048e+8 => 7day milliseconds
+    const newDateNext = new Date(newDate + 6.048e+8);
+    console.log(newDateNext);
+    // 월과 날짜를 다시 적어준다
+    document.querySelector(".date h1").innerHTML = months[newDateNext.getMonth()];
+    document.querySelector(".date p").innerHTML = newDateNext.toDateString();
+    makeWeekCalendar(newDateNext);
+  } else {
+    console.log('Day');
+  };
+  
 });
 
 // make day calendar
@@ -230,9 +282,18 @@ function showRight(link) {
 function makeWeekCalendar(newDate) {
   
   const weekDays = document.querySelector(".weekdays");
-  const weekList = document.querySelector(".days");
-  weekList.classList.remove('days');
-  weekList.classList.add('week');
+  
+  const weekList = document.querySelector(".days") === null ?  document.querySelector(".week") : document.querySelector(".days")
+
+  try {
+    weekList.classList.remove('days');
+    weekList.classList.add('week');
+  } catch {
+    
+  }
+
+  console.log(weekList);
+  // weekList.classList.add('week');
   
   // const weekDays = document.querySelector(".weekdays");
   // const weekList = document.querySelector(".days");
@@ -311,6 +372,7 @@ function makeWeekCalendar(newDate) {
         }
         
       }
+      console.log(weekList);
       weekList.innerHTML = weekDaysList;
 
       const weekListAll = document.querySelectorAll('.elm');
