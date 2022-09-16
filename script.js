@@ -353,27 +353,27 @@ function makeWeekCalendar(newDate) {
 
           // 이 부분이 상당히 어려웠음. if와 for이 결합되어서 굉장히 오묘한 영역을 커버하게 됨 / 사실 지금도 이해가 잘 안 됨
           
-          weekDaysList += `<div class="week--day--list">`;
+          // weekDaysList += `<div class="week--day--list">`;
+          //   for (const [key, value] of Object.entries(obj[newDateFormat])) {
+          //     weekDaysList += `<div class="elm" data-date=${newDateFormat} id=${JSON.stringify(value["링크"])}>${key}</div>`;
+          //   }
+          // weekDaysList += `</div>`;
+          
+          if (Object.keys(obj[newDateFormat]).length == 1) {
+            for (const [key, value] of Object.entries(obj[newDateFormat])) {
+              weekDaysList += `<div class="week--day--list">`;
+              for (const [key, value] of Object.entries(obj[newDateFormat])) {
+                weekDaysList += `<div class="elm" data-date=${newDateFormat} id=${JSON.stringify(value["링크"])}>${key}</div>`;
+              }
+              weekDaysList += `</div>`;
+            }
+          } else {
+            weekDaysList += `<div class="week--day--list">`;
             for (const [key, value] of Object.entries(obj[newDateFormat])) {
               weekDaysList += `<div class="elm" data-date=${newDateFormat} id=${JSON.stringify(value["링크"])}>${key}</div>`;
             }
-          weekDaysList += `</div>`;
-          
-            // if (Object.keys(obj[newDateFormat]).length == 1) {
-            //   for (const [key, value] of Object.entries(obj[newDateFormat])) {
-            //     weekDaysList += `<div class="week--day--list">`;
-            //     for (const [key, value] of Object.entries(obj[newDateFormat])) {
-            //       weekDaysList += `<div class="elm" data-date=${newDateFormat} id=${JSON.stringify(value["링크"])}>${key}</div>`;
-            //     }
-            //     weekDaysList += `</div>`;
-            //   }
-            // } else {
-            //   weekDaysList += `<div class="week--day--list">`;
-            //   for (const [key, value] of Object.entries(obj[newDateFormat])) {
-            //     weekDaysList += `<div class="elm" data-date=${newDateFormat} id=${JSON.stringify(value["링크"])}>${key}</div>`;
-            //   }
-            //   weekDaysList += `</div>`;
-            // }
+            weekDaysList += `</div>`;
+          }
 
 
 
