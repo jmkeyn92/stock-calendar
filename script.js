@@ -39,10 +39,10 @@ function dayclickListener() {
       monthBtn.classList.remove('active');
       weekBtn.classList.remove('active');
       dayBtn.classList.add('active');
-      console.log(item.textContent);
+      console.log(item.childNodes[0].textContent);
       // const dateThisPageStr = document.querySelector('div p')
       // const dateThisPage = new Date(dateThisPageStr);
-      date.setDate(item.textContent);
+      date.setDate(item.childNodes[0].textContent);
       // console.log(date);
       // console.log('--------')
       makeDayCalendar(date);
@@ -278,7 +278,8 @@ function showRight(link) {
 // }
 
 
-// make week calendar
+// make week calendar ****************************************************
+
 function makeWeekCalendar(newDate) {
   
   const weekDays = document.querySelector(".weekdays");
@@ -351,21 +352,9 @@ function makeWeekCalendar(newDate) {
 
           // console.log(obj[newDateFormat]);
 
-          // 이 부분이 상당히 어려웠음. if와 for이 결합되어서 굉장히 오묘한 영역을 커버하게 됨 / 사실 지금도 이해가 잘 안 됨
-          
-          // weekDaysList += `<div class="week--day--list">`;
-          //   for (const [key, value] of Object.entries(obj[newDateFormat])) {
-          //     weekDaysList += `<div class="elm" data-date=${newDateFormat} id=${JSON.stringify(value["링크"])}>${key}</div>`;
-          //   }
-          // weekDaysList += `</div>`;
-          
           if (Object.keys(obj[newDateFormat]).length == 1) {
             for (const [key, value] of Object.entries(obj[newDateFormat])) {
-              weekDaysList += `<div class="week--day--list">`;
-              for (const [key, value] of Object.entries(obj[newDateFormat])) {
-                weekDaysList += `<div class="elm" data-date=${newDateFormat} id=${JSON.stringify(value["링크"])}>${key}</div>`;
-              }
-              weekDaysList += `</div>`;
+              weekDaysList += `<div class="week--day--list"><div class="elm" data-date=${newDateFormat} id=${JSON.stringify(value["링크"])}>${key}</div></div>`;
             }
           } else {
             weekDaysList += `<div class="week--day--list">`;
@@ -375,6 +364,22 @@ function makeWeekCalendar(newDate) {
             weekDaysList += `</div>`;
           }
 
+          // 이 부분이 상당히 어려웠음. if와 for이 결합되어서 굉장히 오묘한 영역을 커버하게 됨 / 사실 지금도 이해가 잘 안 됨
+          // if (Object.keys(obj[newDateFormat]).length == 1) {
+          //   for (const [key, value] of Object.entries(obj[newDateFormat])) {
+          //     weekDaysList += `<div class="week--day--list">`;
+          //     for (const [key, value] of Object.entries(obj[newDateFormat])) {
+          //       weekDaysList += `<div class="elm" data-date=${newDateFormat} id=${JSON.stringify(value["링크"])}>${key}</div>`;
+          //     }
+          //     weekDaysList += `</div>`;
+          //   }
+          // } else {
+          //   weekDaysList += `<div class="week--day--list">`;
+          //   for (const [key, value] of Object.entries(obj[newDateFormat])) {
+          //     weekDaysList += `<div class="elm" data-date=${newDateFormat} id=${JSON.stringify(value["링크"])}>${key}</div>`;
+          //   }
+          //   weekDaysList += `</div>`;
+          // }
 
 
         } catch {
@@ -413,6 +418,254 @@ function makeMonthCalendarEx() {
 
 
 
+// 월 달력 만들기 *********************************************************************
+
+function makeMonthCalendar(newDate) {
+  const monthDays = document.querySelector(".days");
+  // const monthDaysList = document.querySelectorAll(".elm");
+  // console.log(monthDaysList);
+  const lastDay = new Date(
+    newDate.getFullYear(),
+    newDate.getMonth() + 1,
+    0
+  ).getDate();
+  const prevLastDay = new Date(
+    newDate.getFullYear(),
+    newDate.getMonth(),
+    0
+  ).getDate();
+
+  document.querySelector(".date h1").innerHTML = months[newDate.getMonth()];
+  document.querySelector(".date p").innerHTML = newDate.toDateString();
+
+  newDate.setDate(1);
+  const firstDayIndex = newDate.getDay();
+  newDate.setDate(lastDay);
+  const lastDayIndex = newDate.getDay();
+
+  newDate.setDate(1);
+
+  let obj;
+  fetch("calendarDB.json")
+    .then(res => res.json())
+    .then(data => obj = data)
+    .then(() => {
+      // console.log(obewDateFormat]);
+
+      let days = "";
+      for (let x = firstDayIndex; x > 0; x--) {
+        try {
+          const newDateFormat = new Date(newDate.getFullYear(), newDate.getMonth(), prevLastDay - x + 1)
+            .toLocaleDateString("pt-br")
+            .split("/")
+            .reverse()
+            .join("-");
+
+          console.log(x);
+          console.log(newDateFormat);
+
+
+          // if (Object.keys(obj[newDateFormat]).length == 1) {
+          //   for (const [key, value] of Object.entries(obj[newDateFormat])) {
+          //     weekDaysList += `<div class="week--day--list"><div class="elm" data-date=${newDateFormat} id=${JSON.stringify(value["링크"])}>${key}</div></div>`;
+          //   }
+          // } else {
+          //   weekDaysList += `<div class="week--day--list">`;
+          //   for (const [key, value] of Object.entries(obj[newDateFormat])) {
+          //     weekDaysList += `<div class="elm" data-date=${newDateFormat} id=${JSON.stringify(value["링크"])}>${key}</div>`;
+          //   }
+          //   weekDaysList += `</div>`;
+          // }
+
+
+          if (Object.keys(obj[newDateFormat]).length == 1) {
+            for (const [key, value] of Object.entries(obj[newDateFormat])) {
+              days += `<div class="prev-date daytemp"><div class="elm" data-date=${newDateFormat} id=${JSON.stringify(value["링크"])}>${key}</div></div>`;
+            } 
+          } else {
+            days += `<div class="prev-date daytemp">`
+            for (const [key, value] of Object.entries(obj[newDateFormat])) {
+              days += `<div class="elm" data-date=${newDateFormat} id=${JSON.stringify(value["링크"])}>${key}</div>`;
+            }
+            days += `</div>`;
+            }
+        // here
+          } catch {
+            days += `<div class="prev-date daytemp ${prevLastDay - x + 1}">${
+            prevLastDay - x + 1
+          }<div class="month--day--list"></div></div>`;
+        }
+      }
+
+      for (let y = 1; y <= lastDay; y++) {
+        try {
+          const newDateFormat = new Date(newDate.getFullYear(), newDate.getMonth(), y)
+            .toLocaleDateString("pt-br")
+            .split("/")
+            .reverse()
+            .join("-");
+
+          console.log(y);
+          console.log(new Date(Date.parse(newDateFormat)).getMonth());
+
+
+          // 이 부분이 상당히 어려웠음. if와 for이 결합되어서 굉장히 오묘한 영역을 커버하게 됨 / 사실 지금도 이해가 잘 안 됨
+
+          if (
+            y === new Date().getDate() &&
+            new Date(Date.parse(newDateFormat)).getMonth() === new Date().getMonth() &&
+            new Date(Date.parse(newDateFormat)).getFullYear() === new Date().getFullYear()
+          ) {
+            if (Object.keys(obj[newDateFormat]).length == 1) {
+              for (const [key, value] of Object.entries(obj[newDateFormat])) {
+                days += `<div class="today daytemp">${y}<div class="elm--list"><div class="elm" data-date=${newDateFormat} id=${JSON.stringify(value["링크"])}>${key}</div></div></div>`;
+              } 
+            } else {
+              days += `<div class="today daytemp">${y}<div class="elm--list">`
+              for (const [key, value] of Object.entries(obj[newDateFormat])) {
+                days += `<div class="elm" data-date=${newDateFormat} id=${JSON.stringify(value["링크"])}>${key}</div>`;
+              }
+              days += `</div></div>`;
+              }
+          } else {
+            if (Object.keys(obj[newDateFormat]).length == 1) {
+              for (const [key, value] of Object.entries(obj[newDateFormat])) {
+                days += `<div class="daytemp">${y}<div class="elm--list"><div class="elm" data-date=${newDateFormat} id=${JSON.stringify(value["링크"])}>${key}</div></div></div>`;
+              } 
+            } else {
+              days += `<div class="daytemp">${y}<div class="elm--list">`
+              for (const [key, value] of Object.entries(obj[newDateFormat])) {
+                days += `<div class="elm" data-date=${newDateFormat} id=${JSON.stringify(value["링크"])}>${key}</div>`;
+              }
+              days += `</div></div>`;
+              }
+          }
+
+
+          // if (Object.keys(obj[newDateFormat]).length == 1) {
+          //   for (const [key, value] of Object.entries(obj[newDateFormat])) {
+          //     days += `<div class="daytemp">${y}<div class="elm--list"><div class="elm" data-date=${newDateFormat} id=${JSON.stringify(value["링크"])}>${key}</div></div></div>`;
+          //   } 
+          // } else {
+          //   days += `<div class="daytemp">${y}<div class="elm--list">`
+          //   for (const [key, value] of Object.entries(obj[newDateFormat])) {
+          //     days += `<div class="elm" data-date=${newDateFormat} id=${JSON.stringify(value["링크"])}>${key}</div>`;
+          //   }
+          //   days += `</div></div>`;
+          //   }
+        } catch {
+
+          const newDateFormat = new Date(newDate.getFullYear(), newDate.getMonth(), y)
+            .toLocaleDateString("pt-br")
+            .split("/")
+            .reverse()
+            .join("-");
+
+          if (
+            y === new Date().getDate() &&
+            new Date(Date.parse(newDateFormat)).getMonth() === new Date().getMonth() &&
+            new Date(Date.parse(newDateFormat)).getFullYear() === new Date().getFullYear()
+          ) {
+            days += `<div class="today daytemp ">${y}<div class="month--day--list"></div></div>`;
+          } else {
+            days += `<div class="daytemp ">${y}<div class="month--day--list"></div></div>`;
+          }
+          
+        }
+      }
+
+      for (let z = 1; z <= 42 - firstDayIndex - lastDay; z++) {
+        try {
+          const newDateFormat = new Date(newDate.getFullYear(), newDate.getMonth()+1, z)
+            .toLocaleDateString("pt-br")
+            .split("/")
+            .reverse()
+            .join("-");
+
+          console.log(z);
+          console.log(newDateFormat);
+
+          // 이 부분이 상당히 어려웠음. if와 for이 결합되어서 굉장히 오묘한 영역을 커버하게 됨 / 사실 지금도 이해가 잘 안 됨
+          if (Object.keys(obj[newDateFormat]).length == 1) {
+            for (const [key, value] of Object.entries(obj[newDateFormat])) {
+              days += `<div class="next-date daytemp">${z}<div class="elm--list"><div class="elm" data-date=${newDateFormat} id=${JSON.stringify(value["링크"])}>${key}</div></div></div>`;
+            } 
+          } else {
+            days += `<div class="next-date daytemp">${z}<div class="elm--list">`
+            for (const [key, value] of Object.entries(obj[newDateFormat])) {
+              days += `<div class="elm" data-date=${newDateFormat} id=${JSON.stringify(value["링크"])}>${key}</div>`;
+            }
+            days += `</div></div>`;
+            }
+        } catch {
+          days += `<div class="next-date daytemp">${z}<div class="month--day--list"></div></div>`;
+        }
+
+
+
+        // days += `<div class="next-date daytemp ${y}">${y}<div class="month--day--list">1</div></div>`;
+      }
+
+
+      console.log(days);
+      
+      monthDays.innerHTML = days;
+      
+      dayclickListener();
+
+      const monthDaysList = document.querySelectorAll(".elm");
+      monthDaysList.forEach((item) => {
+        item.addEventListener("click", () => {
+          monthBtn.classList.remove('active');
+          weekBtn.classList.remove('active');
+          dayBtn.classList.add('active');
+          // weekList.classList.remove('week');
+          // weekList.classList.add('days');
+          makeDayCalendar(new Date(item.dataset.date), item.id);
+          // theDayListIn.forEach(item => {
+          //   item.classList.remove('selected');
+          // });
+          // item.classList.add('selected')
+          showRight(item.id);
+        });
+      });
+  });
+
+
+
+  // let days = "";
+
+  // for (let x = firstDayIndex; x > 0; x--) {
+  //   days += `<div class='prev-date daytemp ${prevLastDay - x + 1}'>${
+  //     prevLastDay - x + 1
+  //   }<div class="month--day--list">1</div></div>`;
+  // }
+
+  // for (let i = 1; i <= lastDay; i++) {
+  //   if (
+  //     i === new Date().getDate() &&
+  //     newDate.getMonth() === new Date().getMonth() &&
+  //     newDate.getFullYear() === new Date().getFullYear()
+  //   ) {
+  //     days += `<div class="today daytemp ${i}">${i}<div class="month--day--list">1</div></div>`;
+  //   } else {
+  //     days += `<div class="daytemp ${i}">${i}<div class="month--day--list">1</div></div>`;
+  //   }
+  // }
+
+  // for (let y = 1; y <= 42 - firstDayIndex - lastDay; y++) {
+  //   days += `<div class="next-date daytemp ${y}">${y}<div class="month--day--list">1</div></div>`;
+  // }
+
+  // monthDays.innerHTML = days;
+
+
+  newDate.setDate(new Date().getDate());
+  dayclickListener();
+}
+
+
+
 // function makeMonthCalendar(newDate) {
   
 //   // Window.this.load(document.url('https://jmkeyn92.github.io/stock-calendar/'));
@@ -437,201 +690,33 @@ function makeMonthCalendarEx() {
 //   newDate.setDate(lastDay);
 //   const lastDayIndex = newDate.getDay();
 
-//   newDate.setDate(1);
+//   let days = "";
 
-//   let obj;
-//   fetch("calendarDB.json")
-//     .then(res => res.json())
-//     .then(data => obj = data)
-//     .then(() => {
-//       // console.log(obewDateFormat]);
+//   for (let x = firstDayIndex; x > 0; x--) {
+//     days += `<div class='prev-date daytemp ${prevLastDay - x + 1}'>${
+//       prevLastDay - x + 1
+//     }<div class="month--day--list">1</div></div>`;
+//   }
 
-//       let days = "";
-//       for (let x = firstDayIndex; x > 0; x--) {
-//         try {
-//           const newDateFormat = new Date(newDate.getFullYear(), newDate.getMonth(), prevLastDay - x + 1)
-//             .toLocaleDateString("pt-br")
-//             .split("/")
-//             .reverse()
-//             .join("-");
+//   for (let i = 1; i <= lastDay; i++) {
+//     if (
+//       i === new Date().getDate() &&
+//       newDate.getMonth() === new Date().getMonth() &&
+//       newDate.getFullYear() === new Date().getFullYear()
+//     ) {
+//       days += `<div class="today daytemp ${i}">${i}<div class="month--day--list">1</div></div>`;
+//     } else {
+//       days += `<div class="daytemp ${i}">${i}<div class="month--day--list">1</div></div>`;
+//     }
+//   }
 
-//           console.log(x);
-//           console.log(newDateFormat);
+//   for (let y = 1; y <= 42 - firstDayIndex - lastDay; y++) {
+//     days += `<div class="next-date daytemp ${y}">${y}<div class="month--day--list">1</div></div>`;
+//   }
 
-//           // 이 부분이 상당히 어려웠음. if와 for이 결합되어서 굉장히 오묘한 영역을 커버하게 됨 / 사실 지금도 이해가 잘 안 됨
-//           if (Object.keys(obj[newDateFormat]).length == 1) {
-//             for (const [key, value] of Object.entries(obj[newDateFormat])) {
-//               days += `<div class='prev-date daytemp ${prevLastDay - x + 1}'>${
-//                 prevLastDay - x + 1
-//               }</div>`;
-//               for (const [key, value] of Object.entries(obj[newDateFormat])) {
-//                 days += `<div class="elm" data-date=${newDateFormat} id=${JSON.stringify(value["링크"])}>${key}</div>`;
-//               }
-//               days += `</div>`;
-//             }
-//           } else {
-//             days += `<div class='prev-date daytemp ${prevLastDay - x + 1}'>${
-//               prevLastDay - x + 1
-//             }</div>`;
-//             for (const [key, value] of Object.entries(obj[newDateFormat])) {
-//               days += `<div class="elm" data-date=${newDateFormat} id=${JSON.stringify(value["링크"])}>${key}</div>`;
-//             }
-//             days += `</div>`;
-//           }
-//         } catch {
-//           days += `<div class='prev-date daytemp ${prevLastDay - x + 1}'>${
-//             prevLastDay - x + 1
-//           }<div class="month--day--list">1</div></div>`;
-//         }
-//       }
+//   monthDays.innerHTML = days;
 
-//       for (let x = 1; x <= lastDay; x++) {
-//         try {
-//           const newDateFormat = new Date(newDate.getFullYear(), newDate.getMonth(), x)
-//             .toLocaleDateString("pt-br")
-//             .split("/")
-//             .reverse()
-//             .join("-");
-
-//           console.log(x);
-//           console.log(newDateFormat);
-
-//           // here
-
-//           // 이 부분이 상당히 어려웠음. if와 for이 결합되어서 굉장히 오묘한 영역을 커버하게 됨 / 사실 지금도 이해가 잘 안 됨
-//           if (Object.keys(obj[newDateFormat]).length == 1) {
-//             for (const [key, value] of Object.entries(obj[newDateFormat])) {
-//               days += `<div class='daytemp ${x}'>${x}</div>`;
-//               for (const [key, value] of Object.entries(obj[newDateFormat])) {
-//                 days += `<div class="elm" data-date=${newDateFormat} id=${JSON.stringify(value["링크"])}>${key}</div>`;
-//               }
-//               days += `</div>`;
-//             }
-//           } else {
-//             days += `<div class='prev-date daytemp ${prevLastDay - x + 1}'>${
-//               prevLastDay - x + 1
-//             }</div>`;
-//             for (const [key, value] of Object.entries(obj[newDateFormat])) {
-//               days += `<div class="elm" data-date=${newDateFormat} id=${JSON.stringify(value["링크"])}>${key}</div>`;
-//             }
-//             days += `</div>`;
-//           }
-//         } catch {
-//           days += `<div class='prev-date daytemp ${prevLastDay - x + 1}'>${
-//             prevLastDay - x + 1
-//           }<div class="month--day--list">1</div></div>`;
-//         }
-//       }
-
-
-//       console.log(days);
-      
-//       monthDays.innerHTML = days;
-
-//       // const weekListAll = document.querySelectorAll('.elm');
-//       // weekListAll.forEach((item) => {
-//       //   item.addEventListener("click", () => {
-//       //     monthBtn.classList.remove('active');
-//       //     weekBtn.classList.remove('active');
-//       //     dayBtn.classList.add('active');
-//       //     weekList.classList.remove('week');
-//       //     weekList.classList.add('days');
-//       //     makeDayCalendar(new Date(item.dataset.date), item.id);
-//       //     // theDayListIn.forEach(item => {
-//       //     //   item.classList.remove('selected');
-//       //     // });
-//       //     // item.classList.add('selected')
-//       //     showRight(item.id);
-//       //   });
-//       // });
-//   });
-
-
-
-//   // let days = "";
-
-//   // for (let x = firstDayIndex; x > 0; x--) {
-//   //   days += `<div class='prev-date daytemp ${prevLastDay - x + 1}'>${
-//   //     prevLastDay - x + 1
-//   //   }<div class="month--day--list">1</div></div>`;
-//   // }
-
-//   // for (let i = 1; i <= lastDay; i++) {
-//   //   if (
-//   //     i === new Date().getDate() &&
-//   //     newDate.getMonth() === new Date().getMonth() &&
-//   //     newDate.getFullYear() === new Date().getFullYear()
-//   //   ) {
-//   //     days += `<div class="today daytemp ${i}">${i}<div class="month--day--list">1</div></div>`;
-//   //   } else {
-//   //     days += `<div class="daytemp ${i}">${i}<div class="month--day--list">1</div></div>`;
-//   //   }
-//   // }
-
-//   // for (let y = 1; y <= 42 - firstDayIndex - lastDay; y++) {
-//   //   days += `<div class="next-date daytemp ${y}">${y}<div class="month--day--list">1</div></div>`;
-//   // }
-
-//   // monthDays.innerHTML = days;
-
-
+  
 //   newDate.setDate(new Date().getDate());
 //   dayclickListener();
 // }
-
-
-
-function makeMonthCalendar(newDate) {
-  
-  // Window.this.load(document.url('https://jmkeyn92.github.io/stock-calendar/'));
-  const monthDays = document.querySelector(".days");
-  const monthDaysList = document.querySelector("month-day-list");
-  const lastDay = new Date(
-    newDate.getFullYear(),
-    newDate.getMonth() + 1,
-    0
-  ).getDate();
-  const prevLastDay = new Date(
-    newDate.getFullYear(),
-    newDate.getMonth(),
-    0
-  ).getDate();
-
-  document.querySelector(".date h1").innerHTML = months[newDate.getMonth()];
-  document.querySelector(".date p").innerHTML = newDate.toDateString();
-
-  newDate.setDate(1);
-  const firstDayIndex = newDate.getDay();
-  newDate.setDate(lastDay);
-  const lastDayIndex = newDate.getDay();
-
-  let days = "";
-
-  for (let x = firstDayIndex; x > 0; x--) {
-    days += `<div class='prev-date daytemp ${prevLastDay - x + 1}'>${
-      prevLastDay - x + 1
-    }<div class="month--day--list">1</div></div>`;
-  }
-
-  for (let i = 1; i <= lastDay; i++) {
-    if (
-      i === new Date().getDate() &&
-      newDate.getMonth() === new Date().getMonth() &&
-      newDate.getFullYear() === new Date().getFullYear()
-    ) {
-      days += `<div class="today daytemp ${i}">${i}<div class="month--day--list">1</div></div>`;
-    } else {
-      days += `<div class="daytemp ${i}">${i}<div class="month--day--list">1</div></div>`;
-    }
-  }
-
-  for (let y = 1; y <= 42 - firstDayIndex - lastDay; y++) {
-    days += `<div class="next-date daytemp ${y}">${y}<div class="month--day--list">1</div></div>`;
-  }
-
-  monthDays.innerHTML = days;
-
-  
-  newDate.setDate(new Date().getDate());
-  dayclickListener();
-}
