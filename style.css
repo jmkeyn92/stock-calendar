@@ -233,7 +233,7 @@ border-radius: 4px;
   cursor: pointer;
 }
 
-.days div:hover:not(.today, .elm--list, .elm) {
+.days div:hover:not(.today, .elm--list, .elm, .day--month) {
   /* background-color: #262626; */
   border: 0.2rem solid;
   /* border: 0.2rem solid #777; */
@@ -289,14 +289,18 @@ div.daytemp div.elm {
 } */
 
 .days div .elm--list {
-  width: 100%;
+  width: 80%;
   height: 100%;
   display: flex;
   flex-direction: column;
-  padding: 0 0.5rem 0.5rem 1.5rem;
+  padding: 0 0.5rem 0.5rem 0.5rem;
   
 }
 
 .days div .elm--list div.elm {
   width: 100%;
+}
+
+.days div.day--month {
+  width: 25%;
 }

@@ -32,7 +32,7 @@ makeMonthCalendar(date);
 
 function dayclickListener() {
   const ListDayBtn = document.querySelectorAll(".daytemp");
-  // console.log(ListDayBtn)
+  console.log(ListDayBtn);
 
   ListDayBtn.forEach((item) => {
     item.addEventListener("click", () => {
@@ -75,6 +75,9 @@ dayBtn.addEventListener("click", () => {
   makeDayCalendar(date);
 });
 
+
+let periodTab = '';
+// 뒤로 이동 버튼 ***********************************************
 prevBtn.addEventListener("click", () => {
 
   const periodSelected = document.querySelectorAll(".period__item");
@@ -102,14 +105,24 @@ prevBtn.addEventListener("click", () => {
     document.querySelector(".date p").innerHTML = newDateNext.toDateString();
     makeWeekCalendar(newDateNext);
   } else {
-    console.log('Day');
+    const dateDay = document.querySelector('div.date p')
+    console.log(dateDay.textContent);
+    const newDate = Date.parse(dateDay.textContent);
+    console.log(newDate);
+    // 6.048e+8 => 7day milliseconds
+    const newDateNext = new Date(newDate - 8.64e+7);
+    console.log(newDateNext);
+    // 월과 날짜를 다시 적어준다
+    document.querySelector(".date h1").innerHTML = months[newDateNext.getMonth()];
+    document.querySelector(".date p").innerHTML = newDateNext.toDateString();
+    makeDayCalendar(newDateNext);
   };
 
   // const newDate = new Date(date.setMonth(date.getMonth() - 1, 1));
   // makeMonthCalendar(newDate);
 });
 
-let periodTab = '';
+// 앞으로 이동 버튼 ***********************************************
 nextBtn.addEventListener("click", () => {
   const periodSelected = document.querySelectorAll(".period__item");
   periodSelected.forEach(item => {
@@ -136,26 +149,51 @@ nextBtn.addEventListener("click", () => {
     document.querySelector(".date p").innerHTML = newDateNext.toDateString();
     makeWeekCalendar(newDateNext);
   } else {
-    console.log('Day');
+    const dateDay = document.querySelector('div.date p')
+    console.log(dateDay.textContent);
+    const newDate = Date.parse(dateDay.textContent);
+    console.log(newDate);
+    // 6.048e+8 => 7day milliseconds
+    const newDateNext = new Date(newDate + 8.64e+7);
+    console.log(newDateNext);
+    // 월과 날짜를 다시 적어준다
+    document.querySelector(".date h1").innerHTML = months[newDateNext.getMonth()];
+    document.querySelector(".date p").innerHTML = newDateNext.toDateString();
+    makeDayCalendar(newDateNext);
   };
   
 });
 
 // make day calendar
 function makeDayCalendar(newDate, ID) {
-  // document.querySelector(".date h1").innerHTML = months[newDate.getMonth()];
-  // document.querySelector(".date p").innerHTML = newDate.toDateString();
-  try {
+  document.querySelector(".date h1").innerHTML = months[newDate.getMonth()];
+  document.querySelector(".date p").innerHTML = newDate.toDateString();
+  
+  if (document.querySelector(".days")!==null) {
     document.querySelector(".days").remove();
-  } catch {
+  } else if (document.querySelector(".week")!==null) {
     document.querySelector(".week").remove();
+  } else {
+
   };
+  
+  // try {
+  //   document.querySelector(".days").remove();
+  // } catch {
+  //   document.querySelector(".week").remove();
+  // };
 
   // document.querySelector(".days").remove();
   // if( document.querySelector('.days') ) {
   //   document.querySelector('.days').remove();
   // };
-  document.querySelector(".weekdays").className = "day--case";
+
+  try {
+    document.querySelector(".weekdays").className = "day--case";
+  } catch {
+
+  };
+  
   const theDay = document.querySelector(".day--case");
 
   const dayStructure = `<div class="day--list"></div><div class="day--content"></div>`;
@@ -480,20 +518,20 @@ function makeMonthCalendar(newDate) {
 
           if (Object.keys(obj[newDateFormat]).length == 1) {
             for (const [key, value] of Object.entries(obj[newDateFormat])) {
-              days += `<div class="prev-date daytemp"><div class="elm" data-date=${newDateFormat} id=${JSON.stringify(value["링크"])}>${key}</div></div>`;
+              days += `<div class="prev-date daytemp"><div class="day--month">${prevLastDay - x + 1}</div><div class="elm--list"><div class="elm" data-date=${newDateFormat} id=${JSON.stringify(value["링크"])}>${key}</div></div></div>`;
             } 
           } else {
-            days += `<div class="prev-date daytemp">`
+            days += `<div class="prev-date daytemp"><div class="day--month">${prevLastDay - x + 1}</div><div class="elm--list">`
             for (const [key, value] of Object.entries(obj[newDateFormat])) {
               days += `<div class="elm" data-date=${newDateFormat} id=${JSON.stringify(value["링크"])}>${key}</div>`;
             }
-            days += `</div>`;
+            days += `</div></div>`;
             }
         // here
           } catch {
-            days += `<div class="prev-date daytemp ${prevLastDay - x + 1}">${
+            days += `<div class="prev-date daytemp ${prevLastDay - x + 1}"><div class="day--month">${
             prevLastDay - x + 1
-          }<div class="month--day--list"></div></div>`;
+          }</div></div>`;
         }
       }
 
@@ -518,10 +556,10 @@ function makeMonthCalendar(newDate) {
           ) {
             if (Object.keys(obj[newDateFormat]).length == 1) {
               for (const [key, value] of Object.entries(obj[newDateFormat])) {
-                days += `<div class="today daytemp">${y}<div class="elm--list"><div class="elm" data-date=${newDateFormat} id=${JSON.stringify(value["링크"])}>${key}</div></div></div>`;
+                days += `<div class="today daytemp"><div class="day--month">${y}</div><div class="elm--list"><div class="elm" data-date=${newDateFormat} id=${JSON.stringify(value["링크"])}>${key}</div></div></div>`;
               } 
             } else {
-              days += `<div class="today daytemp">${y}<div class="elm--list">`
+              days += `<div class="today daytemp"><div class="day--month">${y}</div><div class="elm--list">`
               for (const [key, value] of Object.entries(obj[newDateFormat])) {
                 days += `<div class="elm" data-date=${newDateFormat} id=${JSON.stringify(value["링크"])}>${key}</div>`;
               }
@@ -530,10 +568,10 @@ function makeMonthCalendar(newDate) {
           } else {
             if (Object.keys(obj[newDateFormat]).length == 1) {
               for (const [key, value] of Object.entries(obj[newDateFormat])) {
-                days += `<div class="daytemp">${y}<div class="elm--list"><div class="elm" data-date=${newDateFormat} id=${JSON.stringify(value["링크"])}>${key}</div></div></div>`;
+                days += `<div class="daytemp"><div class="day--month">${y}</div><div class="elm--list"><div class="elm" data-date=${newDateFormat} id=${JSON.stringify(value["링크"])}>${key}</div></div></div>`;
               } 
             } else {
-              days += `<div class="daytemp">${y}<div class="elm--list">`
+              days += `<div class="daytemp"><div class="day--month">${y}</div><div class="elm--list">`
               for (const [key, value] of Object.entries(obj[newDateFormat])) {
                 days += `<div class="elm" data-date=${newDateFormat} id=${JSON.stringify(value["링크"])}>${key}</div>`;
               }
@@ -566,9 +604,9 @@ function makeMonthCalendar(newDate) {
             new Date(Date.parse(newDateFormat)).getMonth() === new Date().getMonth() &&
             new Date(Date.parse(newDateFormat)).getFullYear() === new Date().getFullYear()
           ) {
-            days += `<div class="today daytemp ">${y}<div class="month--day--list"></div></div>`;
+            days += `<div class="today daytemp "><div class="day--month">${y}</div><div class="month--day--list"></div></div>`;
           } else {
-            days += `<div class="daytemp ">${y}<div class="month--day--list"></div></div>`;
+            days += `<div class="daytemp "><div class="day--month">${y}</div></div>`;
           }
           
         }
@@ -588,17 +626,17 @@ function makeMonthCalendar(newDate) {
           // 이 부분이 상당히 어려웠음. if와 for이 결합되어서 굉장히 오묘한 영역을 커버하게 됨 / 사실 지금도 이해가 잘 안 됨
           if (Object.keys(obj[newDateFormat]).length == 1) {
             for (const [key, value] of Object.entries(obj[newDateFormat])) {
-              days += `<div class="next-date daytemp">${z}<div class="elm--list"><div class="elm" data-date=${newDateFormat} id=${JSON.stringify(value["링크"])}>${key}</div></div></div>`;
+              days += `<div class="next-date daytemp"><div class="day--month">${z}</div><div class="elm--list"><div class="elm" data-date=${newDateFormat} id=${JSON.stringify(value["링크"])}>${key}</div></div></div>`;
             } 
           } else {
-            days += `<div class="next-date daytemp">${z}<div class="elm--list">`
+            days += `<div class="next-date daytemp"><div class="day--month">${z}</div><div class="elm--list">`
             for (const [key, value] of Object.entries(obj[newDateFormat])) {
               days += `<div class="elm" data-date=${newDateFormat} id=${JSON.stringify(value["링크"])}>${key}</div>`;
             }
             days += `</div></div>`;
             }
         } catch {
-          days += `<div class="next-date daytemp">${z}<div class="month--day--list"></div></div>`;
+          days += `<div class="next-date daytemp"><div class="day--month">${z}</div></div>`;
         }
 
 
@@ -611,9 +649,31 @@ function makeMonthCalendar(newDate) {
       
       monthDays.innerHTML = days;
       
-      dayclickListener();
+      // dayclickListener();
+
+
+      const ListDayBtn = document.querySelectorAll(".day--month");
+      console.log(ListDayBtn);
+
+      ListDayBtn.forEach((item) => {
+        item.addEventListener("click", () => {
+          monthBtn.classList.remove('active');
+          weekBtn.classList.remove('active');
+          dayBtn.classList.add('active');
+          console.log(item.childNodes[0].textContent);
+          // const dateThisPageStr = document.querySelector('div p')
+          // const dateThisPage = new Date(dateThisPageStr);
+          date.setDate(item.childNodes[0].textContent);
+          // console.log(date);
+          // console.log('--------')
+          console.log(date);
+          makeDayCalendar(date);
+        });
+      });
+
 
       const monthDaysList = document.querySelectorAll(".elm");
+      console.log(monthDaysList);
       monthDaysList.forEach((item) => {
         item.addEventListener("click", () => {
           monthBtn.classList.remove('active');
@@ -621,6 +681,7 @@ function makeMonthCalendar(newDate) {
           dayBtn.classList.add('active');
           // weekList.classList.remove('week');
           // weekList.classList.add('days');
+          console.log(item.id);
           makeDayCalendar(new Date(item.dataset.date), item.id);
           // theDayListIn.forEach(item => {
           //   item.classList.remove('selected');
