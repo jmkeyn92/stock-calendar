@@ -294,9 +294,9 @@ div.daytemp div.elm {
   font-size: 0.3rem;
 }
 
-/* .daytemp {
-  height: 100vh;
-} */
+.daytemp {
+  margin-bottom: 0.1rem;
+}
 
 .days div.elm--list {
   width: 80%;
