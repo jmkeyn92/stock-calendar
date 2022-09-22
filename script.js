@@ -55,7 +55,6 @@ function makeCalendar() {
 
 
 
-// IRCalendar();
 
 
 function IRCalendar(DB) {
@@ -349,7 +348,7 @@ function IRCalendar(DB) {
                 item.classList.remove('selected');
               });
               item.classList.add('selected')
-              showRight(item.id);
+              showRight(item.id.replace(/["]+/g, ""));
             } else {
               item.id = item.id.replace('http', 'https');
               console.log(item.id);
@@ -358,7 +357,7 @@ function IRCalendar(DB) {
               });
               item.classList.add('selected')
 
-              showRight(item.id);
+              showRight(item.id.replace(/["]+/g, ""));
             }
           });
         });
@@ -367,7 +366,7 @@ function IRCalendar(DB) {
   };
 
   function showRight(link) {
-    const theDayContentIn = `<object type="text/html" data=${link} width="1000px" height="680px" style="overflow:auto;border:5px ridge blue"></object>`;
+    const theDayContentIn = `<object type="text/html" data=${link} width="1000px" height="680px" style="overflow:auto;border:1px ridge rgb(36, 36, 35)"></object>`;
     globalThis.theDayContent.innerHTML = theDayContentIn;
   };
 
