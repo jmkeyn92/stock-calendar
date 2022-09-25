@@ -1,1 +1,16 @@
-{"2022-09-06": {"파라다이스": {"내용": "국내 기관투자자와의 커뮤니케이션", "링크": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20220902900213"}, "CJ ENM": {"내용": "KB Korea Conference 2022", "링크": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20220902900153"}, "모델솔루션": {"내용": "투자설명서", "링크": ["images/table_overhang.png", "images/table_sales.png"]}}}
+{
+  "2022-09-06": {
+    "파라다이스": {
+      "내용": "국내 기관투자자와의 커뮤니케이션",
+      "링크": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20220902900213"
+    },
+    "CJ ENM": {
+      "내용": "KB Korea Conference 2022",
+      "링크": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20220902900153"
+    },
+    "더블유씨피": {
+      "내용": "투자설명서",
+      "링크": "images/IPO_더블유씨피.png"
+    }
+  }
+}
