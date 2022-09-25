@@ -1,5 +1,12 @@
 "use strict";
 
+const homeBtn = document.querySelector(".home");
+homeBtn.addEventListener('click', () => {
+  location.reload(true);
+  location.href = location.href;
+  history.go(0);
+});
+
 const IRBtn = document.querySelector("#IR");
 const IPOBtn = document.querySelector("#IPO");
 const earningsBtn = document.querySelector("#earnings--release");
@@ -13,71 +20,48 @@ function itemBtnClicklistener() {
   const listItemBtn = document.querySelectorAll('.item');
   listItemBtn.forEach(item => {
     item.addEventListener('click', () => {
-      activeRemover();
+      activeRemover(listItemBtn);
       item.classList.add('active');
       makeCalendar();
-
     });
   });
-    
 };
 
-function activeRemover() {
-  const listItemBtn = document.querySelectorAll('.item');
-  listItemBtn.forEach(item => {
-    item.classList.remove('active')
-  })
+function activeRemover(target) {
+  // const listItemBtn = document.querySelectorAll('.item');
+  target.forEach(item => {
+    item.classList.remove('active');
+  });
 };
 
 function makeCalendar() {
-  const itemSelected = document.querySelectorAll(".item");
-  let itemTab = '';
-  console.log(itemSelected);
-  itemSelected.forEach(item => {
+  const itemTab = document.querySelectorAll(".item");
+  let itemTabSelected = '';
+  itemTab.forEach(item => {
     console.log(item.classList);
     console.log(item.classList.value);
     if (item.classList.value.includes('active')) {
       console.log(item.textContent);
-      itemTab = item.textContent;
-
-    }
+      itemTabSelected = item.textContent;
+    };
   });
-  console.log(itemTab);
-  if (itemTab==='IR') {
-    IRCalendar("calendarDB.json");
-  } else if (itemTab==='IPO') {
-    IRCalendar("IPODB.json");
+  if (itemTabSelected==='IR') {
+    itemCalendar("calendarDB.json");
+  } else if (itemTabSelected==='IPO') {
+    itemCalendar("IPODB.json");
   } else {
-    IRCalendar();
+    pass;
   };
 };
 
 
-
-
-
-
-function IRCalendar(DB) {
+function itemCalendar(DB) {
 
   const calendar = document.querySelector(".calendar");
-
   const date = new Date();
   console.log(date.getDate());
 
-  const months = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
+  const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
   const prevBtn = document.querySelector(".fa-angle-left");
   const nextBtn = document.querySelector(".fa-angle-right");
@@ -87,22 +71,18 @@ function IRCalendar(DB) {
   const dayBtn = document.querySelector("#day");
 
   makeMonthCalendar(date);
+  console.log(date);
   // dayclickListener();
 
   function dayclickListener() {
     const ListDayBtn = document.querySelectorAll(".daytemp");
-    console.log(ListDayBtn);
-
     ListDayBtn.forEach((item) => {
       item.addEventListener("click", () => {
         monthBtn.classList.remove('active');
         weekBtn.classList.remove('active');
         dayBtn.classList.add('active');
-        console.log(item.childNodes[0].textContent);
-        // const dateThisPageStr = document.querySelector('div p')
-        // const dateThisPage = new Date(dateThisPageStr);
         date.setDate(item.childNodes[0].textContent);
-        // console.log(date);
+        // console.log(date);          ******************************************************************** here
         // console.log('--------')
         makeDayCalendar(date);
       });
@@ -122,6 +102,7 @@ function IRCalendar(DB) {
     dayBtn.classList.remove('active');
     weekBtn.classList.add('active');
     // makeMonthCalendarEx(date);
+    console.log(date);
     makeWeekCalendar(date);
   });
 
@@ -516,11 +497,8 @@ function IRCalendar(DB) {
 
 
   // 월 달력 만들기 *********************************************************************
-
   function makeMonthCalendar(newDate) {
     const monthDays = document.querySelector(".days");
-    // const monthDaysList = document.querySelectorAll(".elm");
-    // console.log(monthDaysList);
     const lastDay = new Date(
       newDate.getFullYear(),
       newDate.getMonth() + 1,
@@ -558,23 +536,6 @@ function IRCalendar(DB) {
               .reverse()
               .join("-");
 
-            console.log(x);
-            console.log(newDateFormat);
-
-
-            // if (Object.keys(obj[newDateFormat]).length == 1) {
-            //   for (const [key, value] of Object.entries(obj[newDateFormat])) {
-            //     weekDaysList += `<div class="week--day--list"><div class="elm" data-date=${newDateFormat} id=${JSON.stringify(value["링크"])}>${key}</div></div>`;
-            //   }
-            // } else {
-            //   weekDaysList += `<div class="week--day--list">`;
-            //   for (const [key, value] of Object.entries(obj[newDateFormat])) {
-            //     weekDaysList += `<div class="elm" data-date=${newDateFormat} id=${JSON.stringify(value["링크"])}>${key}</div>`;
-            //   }
-            //   weekDaysList += `</div>`;
-            // }
-
-
             if (Object.keys(obj[newDateFormat]).length == 1) {
               for (const [key, value] of Object.entries(obj[newDateFormat])) {
                 days += `<div class="prev-date daytemp"><div class="prev day--month">${prevLastDay - x + 1}</div><div class="elm--list"><div class="elm" data-date=${newDateFormat} id=${JSON.stringify(value["링크"])}>${key}</div></div></div>`;
@@ -586,7 +547,6 @@ function IRCalendar(DB) {
               }
               days += `</div></div>`;
               }
-          // here
             } catch {
               days += `<div class="prev-date daytemp ${prevLastDay - x + 1}"><div class="prev day--month">${
               prevLastDay - x + 1
@@ -602,12 +562,7 @@ function IRCalendar(DB) {
               .reverse()
               .join("-");
 
-            console.log(y);
-            console.log(new Date(Date.parse(newDateFormat)).getMonth());
-
-
             // 이 부분이 상당히 어려웠음. if와 for이 결합되어서 굉장히 오묘한 영역을 커버하게 됨 / 사실 지금도 이해가 잘 안 됨
-
             if (
               y === new Date().getDate() &&
               new Date(Date.parse(newDateFormat)).getMonth() === new Date().getMonth() &&
@@ -638,20 +593,7 @@ function IRCalendar(DB) {
                 }
             }
 
-
-            // if (Object.keys(obj[newDateFormat]).length == 1) {
-            //   for (const [key, value] of Object.entries(obj[newDateFormat])) {
-            //     days += `<div class="daytemp">${y}<div class="elm--list"><div class="elm" data-date=${newDateFormat} id=${JSON.stringify(value["링크"])}>${key}</div></div></div>`;
-            //   } 
-            // } else {
-            //   days += `<div class="daytemp">${y}<div class="elm--list">`
-            //   for (const [key, value] of Object.entries(obj[newDateFormat])) {
-            //     days += `<div class="elm" data-date=${newDateFormat} id=${JSON.stringify(value["링크"])}>${key}</div>`;
-            //   }
-            //   days += `</div></div>`;
-            //   }
           } catch {
-
             const newDateFormat = new Date(newDate.getFullYear(), newDate.getMonth(), y)
               .toLocaleDateString("pt-br")
               .split("/")
@@ -667,7 +609,6 @@ function IRCalendar(DB) {
             } else {
               days += `<div class="daytemp "><div class="day--month">${y}</div></div>`;
             }
-            
           }
         }
 
@@ -697,31 +638,20 @@ function IRCalendar(DB) {
           } catch {
             days += `<div class="next-date daytemp"><div class="next day--month">${z}</div></div>`;
           }
-
-
-
-          // days += `<div class="next-date daytemp ${y}">${y}<div class="month--day--list">1</div></div>`;
         }
 
-
-        console.log(days);
-        
+        // console.log(days);
         monthDays.innerHTML = days;
-        
-        // dayclickListener();
-
 
         const ListDayBtn = document.querySelectorAll(".day--month");
-        console.log(ListDayBtn);
+        // console.log(ListDayBtn);
 
         ListDayBtn.forEach((item) => {
           item.addEventListener("click", () => {
             monthBtn.classList.remove('active');
             weekBtn.classList.remove('active');
             dayBtn.classList.add('active');
-            console.log(item.childNodes[0].textContent);
-            // const dateThisPageStr = document.querySelector('div p')
-            // const dateThisPage = new Date(dateThisPageStr);
+            // console.log(item.childNodes[0].textContent);
             if (item.classList.value.includes('prev')) {
               date.setMonth(date.getMonth() - 1);
               date.setDate(item.childNodes[0].textContent);
@@ -731,14 +661,10 @@ function IRCalendar(DB) {
             } else {
               date.setDate(item.childNodes[0].textContent);
             }
-            
             // console.log(date);
-            // console.log('--------')
-            console.log(date);
             makeDayCalendar(date);
           });
         });
-
 
         const monthDaysList = document.querySelectorAll(".elm");
         console.log(monthDaysList);
@@ -747,50 +673,15 @@ function IRCalendar(DB) {
             monthBtn.classList.remove('active');
             weekBtn.classList.remove('active');
             dayBtn.classList.add('active');
-            // weekList.classList.remove('week');
-            // weekList.classList.add('days');
-            console.log(item.id);
+            // console.log(item.id);
             makeDayCalendar(new Date(item.dataset.date), item.id);
-            // theDayListIn.forEach(item => {
-            //   item.classList.remove('selected');
-            // });
-            // item.classList.add('selected')
+            // month에서 기업명을 클릭했을 때 day로 넘어가면서 오른쪽에 보여주는 것(showRight)
             showRight(item.id);
           });
         });
     });
 
-
-
-    // let days = "";
-
-    // for (let x = firstDayIndex; x > 0; x--) {
-    //   days += `<div class='prev-date daytemp ${prevLastDay - x + 1}'>${
-    //     prevLastDay - x + 1
-    //   }<div class="month--day--list">1</div></div>`;
-    // }
-
-    // for (let i = 1; i <= lastDay; i++) {
-    //   if (
-    //     i === new Date().getDate() &&
-    //     newDate.getMonth() === new Date().getMonth() &&
-    //     newDate.getFullYear() === new Date().getFullYear()
-    //   ) {
-    //     days += `<div class="today daytemp ${i}">${i}<div class="month--day--list">1</div></div>`;
-    //   } else {
-    //     days += `<div class="daytemp ${i}">${i}<div class="month--day--list">1</div></div>`;
-    //   }
-    // }
-
-    // for (let y = 1; y <= 42 - firstDayIndex - lastDay; y++) {
-    //   days += `<div class="next-date daytemp ${y}">${y}<div class="month--day--list">1</div></div>`;
-    // }
-
-    // monthDays.innerHTML = days;
-
-
     newDate.setDate(new Date().getDate());
-    dayclickListener();
+    // dayclickListener();
   }
-
 };
