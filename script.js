@@ -27,6 +27,13 @@ function itemBtnClicklistener() {
   });
 };
 
+function nonActiveItemBtnRemover() {
+  const nonActiveItemList = document.querySelectorAll('.item:not(.active)');
+  nonActiveItemList.forEach(item => {
+    item.remove();
+    });
+};
+
 function activeRemover(target) {
   // const listItemBtn = document.querySelectorAll('.item');
   target.forEach(item => {
@@ -97,21 +104,19 @@ function itemCalendar(DB) {
   });
 
   weekBtn.addEventListener("click", (event) => {
-    // console.log(event.target);
+    nonActiveItemBtnRemover()
     monthBtn.classList.remove('active');
     dayBtn.classList.remove('active');
     weekBtn.classList.add('active');
-    // makeMonthCalendarEx(date);
-    console.log(date);
     makeWeekCalendar(date);
   });
 
   dayBtn.addEventListener("click", () => {
+    nonActiveItemBtnRemover()
     monthBtn.classList.remove('active');
     weekBtn.classList.remove('active');
     dayBtn.classList.add('active');
     console.log(date.getDate());
-    // makeMonthCalendarEx(date);
     makeDayCalendar(date);
   });
 
@@ -208,7 +213,7 @@ function itemCalendar(DB) {
   function makeDayCalendar(newDate, ID) {
     document.querySelector(".date h1").innerHTML = months[newDate.getMonth()];
     document.querySelector(".date p").innerHTML = newDate.toDateString();
-    
+
     if (document.querySelector(".days")!==null) {
       document.querySelector(".days").remove();
     } else if (document.querySelector(".week")!==null) {
