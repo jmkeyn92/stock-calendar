@@ -336,6 +336,11 @@ div.daytemp div.elm {
 
 .days div .elm--list div.elm {
   width: 100%;
+  /* height: 100%; */
+}
+
+.elm {
+  /* height: 50%; */
 }
 
 .days div.day--month {

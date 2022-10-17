@@ -352,7 +352,7 @@ function itemCalendar(DB) {
   };
 
   function showRight(link) {
-    const theDayContentIn = `<object type="text/html" data=${link} width="1000px" height="700px" style="overflow:auto;border:1px ridge rgb(36, 36, 35)"></object>`;
+    const theDayContentIn = `<object type="text/html" data=${link} width="1000px" height="750px" style="overflow:auto;border:1px ridge rgb(36, 36, 35)"></object>`;
     globalThis.theDayContent.innerHTML = theDayContentIn;
   };
 
