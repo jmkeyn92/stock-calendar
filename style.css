@@ -159,11 +159,13 @@ border-radius: 4px;
   /* text-align: center; */
   /* align-items: center; */
   background-color: rgba(0, 0, 0, 0.5);
+  overflow: auto;
 }
 
 .elm {
   cursor: pointer;
   padding: 0.2rem 0;
+  font-size: 1.4rem;
   /* height: 100%; */
 }
 
