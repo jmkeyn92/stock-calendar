@@ -341,9 +341,8 @@ div.daytemp div.elm {
   /* height: 100%; */
 }
 
-.elm {
-  /* height: 50%; */
-}
+/* .elm {
+} */
 
 .days div.day--month {
   width: 25%;
