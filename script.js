@@ -56,6 +56,8 @@ function makeCalendar() {
     itemCalendar("calendarDB.json");
   } else if (itemTabSelected==='IPO') {
     itemCalendar("IPODB.json");
+  } else if (itemTabSelected==='공급계약') {
+    itemCalendar("supplyDB.json");
   } else {
     pass;
   };

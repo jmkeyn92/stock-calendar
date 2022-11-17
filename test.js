@@ -6,8 +6,11 @@
 // arr.forEach(console.log); 
 
 
-let score = 80;
-console.log(score);
-// score = 80;
+// let score = 80;
+// console.log(score);
+// // score = 80;
 
-console.log(score);
+// console.log(score);
+
+console.log(!'hello');
+
