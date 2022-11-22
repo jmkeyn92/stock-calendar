@@ -58,6 +58,8 @@ function makeCalendar() {
     itemCalendar("IPODB.json");
   } else if (itemTabSelected==='공급계약') {
     itemCalendar("supplyDB.json");
+  } else if (itemTabSelected==='실적발표') {
+    itemCalendar("earningsDB.json");
   } else {
     pass;
   };
