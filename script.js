@@ -14,7 +14,8 @@ const supplyBtn = document.querySelector("#supply--contract");
 const newsBtn = document.querySelector("#news");
 
 itemBtnClicklistener();
-makeCalendar();
+itemCalendar(itemWhat());
+// makeCalendar();
 
 function itemBtnClicklistener() {
   const listItemBtn = document.querySelectorAll('.item');
@@ -35,7 +36,6 @@ function nonActiveItemBtnRemover() {
 };
 
 function activeRemover(target) {
-  // const listItemBtn = document.querySelectorAll('.item');
   target.forEach(item => {
     item.classList.remove('active');
   });
@@ -45,32 +45,64 @@ function makeCalendar() {
   const itemTab = document.querySelectorAll(".item");
   let itemTabSelected = '';
   itemTab.forEach(item => {
-    console.log(item.classList);
-    console.log(item.classList.value);
+    // console.log(item.classList);
+    // console.log(item.classList.value);
     if (item.classList.value.includes('active')) {
-      console.log(item.textContent);
+      // console.log(item.textContent);
       itemTabSelected = item.textContent;
     };
   });
+  // if (itemTabSelected==='IR') {
+  //   itemCalendar("calendarDB.json");
+  // } else if (itemTabSelected==='IPO') {
+  //   itemCalendar("IPODB.json");
+  // } else if (itemTabSelected==='공급계약') {
+  //   itemCalendar("supplyDB.json");
+  // } else if (itemTabSelected==='실적발표') {
+  //   itemCalendar("earningsDB.json");
+  // } else {
+  //   pass;
+  // };
+  // itemWhat();
+  itemCalendar(itemWhat());
+};
+
+function itemWhat() {
+
+  const itemTab = document.querySelectorAll(".item");
+  let itemTabSelected = '';
+  itemTab.forEach(item => {
+    // console.log(item.classList);
+    // console.log(item.classList.value);
+    if (item.classList.value.includes('active')) {
+      // console.log(item.textContent);
+      itemTabSelected = item.textContent;
+    };
+  });
+
+  let DB;
   if (itemTabSelected==='IR') {
-    itemCalendar("calendarDB.json");
+    DB="calendarDB.json";
   } else if (itemTabSelected==='IPO') {
-    itemCalendar("IPODB.json");
+    DB="IPODB.json";
   } else if (itemTabSelected==='공급계약') {
-    itemCalendar("supplyDB.json");
+    DB="supplyDB.json";
   } else if (itemTabSelected==='실적발표') {
-    itemCalendar("earningsDB.json");
+    DB="earningsDB.json";
   } else {
     pass;
   };
+  return DB
 };
 
 
 function itemCalendar(DB) {
 
+  console.log(DB);
+
   const calendar = document.querySelector(".calendar");
   const date = new Date();
-  console.log(date.getDate());
+  // console.log(date.getDate());
 
   const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
@@ -81,8 +113,8 @@ function itemCalendar(DB) {
   const weekBtn = document.querySelector("#week");
   const dayBtn = document.querySelector("#day");
 
-  makeMonthCalendar(date);
-  console.log(date);
+  makeMonthCalendar(date, DB);
+  // console.log(date);
   // dayclickListener();
 
   function dayclickListener() {
@@ -120,7 +152,7 @@ function itemCalendar(DB) {
     monthBtn.classList.remove('active');
     weekBtn.classList.remove('active');
     dayBtn.classList.add('active');
-    console.log(date.getDate());
+    // console.log(date.getDate());
     makeDayCalendar(date);
   });
 
@@ -131,36 +163,51 @@ function itemCalendar(DB) {
 
     const periodSelected = document.querySelectorAll(".period__item");
     periodSelected.forEach(item => {
-      console.log(item.classList);
-      console.log(item.classList.value);
+      // console.log(item.classList);
+      // console.log(item.classList.value);
       if (item.classList.value.includes('active')) {
         periodTab = item.textContent;
       }
     });
     console.log(periodTab);
+
+    // if (itemTabSelected==='IR') {
+    //   itemCalendar("calendarDB.json");
+    // } else if (itemTabSelected==='IPO') {
+    //   itemCalendar("IPODB.json");
+    // } else if (itemTabSelected==='공급계약') {
+    //   itemCalendar("supplyDB.json");
+    // } else if (itemTabSelected==='실적발표') {
+    //   itemCalendar("earningsDB.json");
+    // } else {
+    //   pass;
+    // };
+
+
     if (periodTab==='Month') {
       const newDate = new Date(date.setMonth(date.getMonth() - 1, 1));
-      makeMonthCalendar(newDate);
+      console.log(itemWhat());
+      makeMonthCalendar(newDate, itemWhat());
     } else if (periodTab==='Week') {
       const dateWeek = document.querySelector('div.date p')
-      console.log(dateWeek.textContent);
+      // console.log(dateWeek.textContent);
       const newDate = Date.parse(dateWeek.textContent);
-      console.log(newDate);
+      // console.log(newDate);
       // 6.048e+8 => 7day milliseconds
       const newDateNext = new Date(newDate - 6.048e+8);
-      console.log(newDateNext);
+      // console.log(newDateNext);
       // 월과 날짜를 다시 적어준다
       document.querySelector(".date h1").innerHTML = months[newDateNext.getMonth()];
       document.querySelector(".date p").innerHTML = newDateNext.toDateString();
       makeWeekCalendar(newDateNext);
     } else {
       const dateDay = document.querySelector('div.date p')
-      console.log(dateDay.textContent);
+      // console.log(dateDay.textContent);
       const newDate = Date.parse(dateDay.textContent);
-      console.log(newDate);
+      // console.log(newDate);
       // 6.048e+8 => 7day milliseconds
       const newDateNext = new Date(newDate - 8.64e+7);
-      console.log(newDateNext);
+      // console.log(newDateNext);
       // 월과 날짜를 다시 적어준다
       document.querySelector(".date h1").innerHTML = months[newDateNext.getMonth()];
       document.querySelector(".date p").innerHTML = newDateNext.toDateString();
@@ -175,36 +222,36 @@ function itemCalendar(DB) {
   nextBtn.addEventListener("click", () => {
     const periodSelected = document.querySelectorAll(".period__item");
     periodSelected.forEach(item => {
-      console.log(item.classList);
-      console.log(item.classList.value);
+      // console.log(item.classList);
+      // console.log(item.classList.value);
       if (item.classList.value.includes('active')) {
         periodTab = item.textContent;
       }
     });
-    console.log(periodTab);
+    // console.log(periodTab);
     if (periodTab==='Month') {
       const newDate = new Date(date.setMonth(date.getMonth() + 1, 1));
-      makeMonthCalendar(newDate);
+      makeMonthCalendar(newDate, itemWhat());
     } else if (periodTab==='Week') {
       const dateWeek = document.querySelector('div.date p')
-      console.log(dateWeek.textContent);
+      // console.log(dateWeek.textContent);
       const newDate = Date.parse(dateWeek.textContent);
-      console.log(newDate);
+      // console.log(newDate);
       // 6.048e+8 => 7day milliseconds
       const newDateNext = new Date(newDate + 6.048e+8);
-      console.log(newDateNext);
+      // console.log(newDateNext);
       // 월과 날짜를 다시 적어준다
       document.querySelector(".date h1").innerHTML = months[newDateNext.getMonth()];
       document.querySelector(".date p").innerHTML = newDateNext.toDateString();
       makeWeekCalendar(newDateNext);
     } else {
       const dateDay = document.querySelector('div.date p')
-      console.log(dateDay.textContent);
+      // console.log(dateDay.textContent);
       const newDate = Date.parse(dateDay.textContent);
-      console.log(newDate);
+      // console.log(newDate);
       // 6.048e+8 => 7day milliseconds
       const newDateNext = new Date(newDate + 8.64e+7);
-      console.log(newDateNext);
+      // console.log(newDateNext);
       // 월과 날짜를 다시 적어준다
       document.querySelector(".date h1").innerHTML = months[newDateNext.getMonth()];
       document.querySelector(".date p").innerHTML = newDateNext.toDateString();
@@ -256,14 +303,14 @@ function itemCalendar(DB) {
     // theDay.appendChild(dayList);
     // theDay.appendChild(dayContent);
 
-    console.log(newDate);
+    // console.log(newDate);
     const newDateFormat = newDate
       .toLocaleDateString("pt-br")
       .split("/")
       .reverse()
       .join("-");
     // const newDateFormat = newDate.toISOString().split('T')[0];
-    console.log(newDateFormat);
+    // console.log(newDateFormat);
 
     let obj;
     fetch(DB)
@@ -271,23 +318,23 @@ function itemCalendar(DB) {
       .then(data => obj = data)
       // .then((data) => (obj = data))
       .then(() => {
-        console.log(obj);
-        console.log(obj[newDateFormat]);
+        // console.log(obj);
+        // console.log(obj[newDateFormat]);
         let day = "";
 
         for (const [key, value] of Object.entries(obj[newDateFormat])) {
-          console.log(ID);
-          console.log(JSON.stringify(value["링크"]).replace(/['"]+/g,''));
+          // console.log(ID);
+          // console.log(JSON.stringify(value["링크"]).replace(/['"]+/g,''));
           if (ID === JSON.stringify(value["링크"]).replace(/['"]+/g,'')) {
             day += `<div class="day list selected2" id=${JSON.stringify(value["링크"])}>
             ${key}<div class="day elm">${JSON.stringify(value["내용"]).replace(/["]+/g, "")}
           </div></div><br>`;
-            console.log('T');
+            // console.log('T');
           } else {
             day += `<div class="day list" id=${JSON.stringify(value["링크"])}>
             ${key}<div class="day elm">${JSON.stringify(value["내용"]).replace(/["]+/g, "")}
           </div></div><br>`;
-          console.log('F');
+          // console.log('F');
           };
         };
 
@@ -325,14 +372,14 @@ function itemCalendar(DB) {
         theDayListIn.forEach(item => {
           item.classList.remove('selected');
         });
-        console.log(theDayListIn);
+        // console.log(theDayListIn);
         theDayListIn.forEach((item) => {
           item.addEventListener("click", () => {
             // console.log(item.id);
             theDayListIn.forEach(item => {
               item.classList.remove('selected2');
             });
-            console.log(item.id[4]);
+            // console.log(item.id[4]);
             if (item.id[4] === 's') {
               theDayListIn.forEach(item => {
                 item.classList.remove('selected');
@@ -341,7 +388,7 @@ function itemCalendar(DB) {
               showRight(item.id.replace(/["]+/g, ""));
             } else {
               item.id = item.id.replace('http', 'https');
-              console.log(item.id);
+              // console.log(item.id);
               theDayListIn.forEach(item => {
                 item.classList.remove('selected');
               });
@@ -380,7 +427,7 @@ function itemCalendar(DB) {
       
     }
 
-    console.log(weekList);
+    // console.log(weekList);
     // weekList.classList.add('week');
     
     // const weekDays = document.querySelector(".weekdays");
@@ -415,9 +462,9 @@ function itemCalendar(DB) {
               firstDayWeek + i
             } (${dayWeek[i]})</div>`;
           }};
-    console.log(days);
+    // console.log(days);
     weekDays.innerHTML = days;
-    console.log(weekDays);
+    // console.log(weekDays);
 
     let obj;
     fetch(DB)
@@ -425,7 +472,7 @@ function itemCalendar(DB) {
       .then(data => obj = data)
       // .then((data) => (obj = data))
       .then(() => {
-        console.log(obj);
+        // console.log(obj);
         // console.log(obj[newDateFormat]);
 
         let weekDaysList = "";
@@ -474,7 +521,7 @@ function itemCalendar(DB) {
           }
           
         }
-        console.log(weekList);
+        // console.log(weekList);
         weekList.innerHTML = weekDaysList;
 
         const weekListAll = document.querySelectorAll('.elm');
@@ -506,7 +553,8 @@ function itemCalendar(DB) {
 
 
   // 월 달력 만들기 *********************************************************************
-  function makeMonthCalendar(newDate) {
+  function makeMonthCalendar(newDate, DB) {
+    console.log(DB);
     const monthDays = document.querySelector(".days");
     const lastDay = new Date(
       newDate.getFullYear(),
@@ -530,6 +578,9 @@ function itemCalendar(DB) {
     newDate.setDate(1);
 
     let obj;
+
+    console.log(DB);
+    
     fetch(DB)
       .then(res => res.json())
       .then(data => obj = data)
@@ -629,8 +680,8 @@ function itemCalendar(DB) {
               .reverse()
               .join("-");
 
-            console.log(z);
-            console.log(newDateFormat);
+            // console.log(z);
+            // console.log(newDateFormat);
 
             // 이 부분이 상당히 어려웠음. if와 for이 결합되어서 굉장히 오묘한 영역을 커버하게 됨 / 사실 지금도 이해가 잘 안 됨
             if (Object.keys(obj[newDateFormat]).length == 1) {
@@ -676,7 +727,7 @@ function itemCalendar(DB) {
         });
 
         const monthDaysList = document.querySelectorAll(".elm");
-        console.log(monthDaysList);
+        // console.log(monthDaysList);
         monthDaysList.forEach((item) => {
           item.addEventListener("click", () => {
             monthBtn.classList.remove('active');
