@@ -12,12 +12,34 @@
 
 // console.log(score);
 
-console.log('hello');
+// console.log('hello');
 
-function countdown(n) {
-  if (n<0) return;
-  console.log(n);
-  countdown(n-1);
+// function countdown(n) {
+//   if (n<0) return;
+//   console.log(n);
+//   countdown(n-1);
+// };
+
+// countdown(10);
+
+// function foo() {
+//   console.log('global function foo');
+// };
+
+// function bar() {
+//   function foo() {
+//     console.log('local function foo');
+//   }
+//   foo();
+// };
+
+// bar();
+
+var x = 'global';
+function foo() {
+  console.log(x);
+  var x = 'local';
 };
 
-countdown(10);
+foo();
+console.log(x);
