@@ -35,11 +35,37 @@
 
 // bar();
 
-var x = 'global';
-function foo() {
-  console.log(x);
-  var x = 'local';
-};
+// var x = 'global';
+// function foo() {
+//   console.log(x);
+//   var x = 'local';
+// };
 
-foo();
-console.log(x);
+// foo();
+// console.log(x);
+
+class Person {
+  constructor(name, age) {
+    this.name = name;
+    let _age = age;
+  }
+  sayHi() {
+    console.log(`Hi! My name is ${this.name}. I am ${_age}.`);
+  };
+  };
+
+
+const me = new Person('Kim', 43);
+console.log(me.name);
+console.log(me._age);
+
+
+// var funcs = [];
+// for (var i = 0; i < 3; i++) {
+//   funcs[i] = function() { return i; };
+// };
+// for (var j = 0; j < funcs.length; j++) {
+//   console.log(funcs[j]());
+// };
+
+// console.log(funcs[0]);
