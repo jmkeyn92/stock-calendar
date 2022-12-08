@@ -70,5 +70,5 @@
 
 // console.log(funcs[0]);
 
-const arrow = () => var x;
-arrow(3);
+const arrow = () => x;
+arrow.c
