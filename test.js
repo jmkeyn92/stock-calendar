@@ -71,4 +71,7 @@
 // console.log(funcs[0]);
 
 const arrow = () => x;
-arrow.c
+
+const fruits = ['banana', 'apple', 'orange'];
+length = 3;
+Array.from({length}, (_, i) => i);
