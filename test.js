@@ -70,8 +70,27 @@
 
 // console.log(funcs[0]);
 
-const arrow = () => x;
+// const arrow = () => x;
 
-const fruits = ['banana', 'apple', 'orange'];
-length = 3;
-Array.from({length}, (_, i) => i);
+// const fruits = [1, 2, 3];
+// // length = 3;
+// // Array.from({length}, (_, i) => i);
+
+// const average = fruits.reduce((acc, cur, i, { length }) => {
+//   return i === length - 1 ? (acc + cur) / length : acc + cur;
+// }, 0);
+// console.log(average);
+// console.log(fruits);
+
+// const max = Math.max(fruits);
+// console.log(max);
+
+// console.log(Number.MIN_VALUE-Number.EPSILON>0);
+// const regExp = /is/g;
+// const target = 'he is is a boy';
+// console.log(target.match(regExp));
+
+
+var arr = [1, 2, 3];
+const max = Math.max.call(null, arr);
+console.log(max);
