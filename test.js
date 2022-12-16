@@ -86,11 +86,11 @@
 // console.log(max);
 
 // console.log(Number.MIN_VALUE-Number.EPSILON>0);
-// const regExp = /is/g;
-// const target = 'he is is a boy';
-// console.log(target.match(regExp));
+const regExp = /is/g;
+const target = 'he is is a boy';
+console.log(target.match(regExp));
 
 
-var arr = [1, 2, 3];
-const max = Math.max.call(null, arr);
-console.log(max);
+// var arr = [1, 2, 3];
+// const max = Math.max.call(null, arr);
+// console.log(max);
