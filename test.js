@@ -94,3 +94,5 @@ console.log(target.match(regExp));
 // var arr = [1, 2, 3];
 // const max = Math.max.call(null, arr);
 // console.log(max);
+
+
