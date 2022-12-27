@@ -95,4 +95,5 @@ console.log(target.match(regExp));
 // const max = Math.max.call(null, arr);
 // console.log(max);
 
+console.log(1 == '1');
 
